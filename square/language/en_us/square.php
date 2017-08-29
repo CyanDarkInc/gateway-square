@@ -1,4 +1,5 @@
 <?php
+
 $lang['Square.name'] = 'Square';
 $lang['Square.application_id'] = 'Application ID';
 $lang['Square.access_token'] = 'Access Token';

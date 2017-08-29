@@ -1,6 +1,6 @@
 <?php
 /**
- * Square Gateway
+ * Square Gateway.
  *
  * The Square API documentation can be found at:
  * https://docs.connect.squareup.com/articles/square-checkout-overview/
@@ -27,9 +27,9 @@ class Square extends NonmerchantGateway
      * @var array An array of meta data for this gateway
      */
     private $meta;
-    
+
     /**
-     * Construct a new merchant gateway
+     * Construct a new merchant gateway.
      */
     public function __construct()
     {
@@ -41,7 +41,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Returns the name of this gateway
+     * Returns the name of this gateway.
      *
      * @return string The common name of this gateway
      */
@@ -51,7 +51,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Returns the version of this gateway
+     * Returns the version of this gateway.
      *
      * @return string The current version of this gateway
      */
@@ -61,7 +61,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Returns the name and URL for the authors of this gateway
+     * Returns the name and URL for the authors of this gateway.
      *
      * @return array The name and URL of the authors of this gateway
      */
@@ -71,7 +71,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Return all currencies supported by this gateway
+     * Return all currencies supported by this gateway.
      *
      * @return array A numerically indexed array containing all currency codes (ISO 4217 format) this gateway supports
      */
@@ -97,7 +97,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Sets the currency code to be used for all subsequent payments
+     * Sets the currency code to be used for all subsequent payments.
      *
      * @param string $currency The ISO 4217 currency code to be used for subsequent payments
      */
@@ -107,7 +107,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Create and return the view content required to modify the settings of this gateway
+     * Create and return the view content required to modify the settings of this gateway.
      *
      * @param array $meta An array of meta (settings) data belonging to this gateway
      * @return string HTML content containing the fields to update the meta data for this gateway
@@ -125,7 +125,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Validates the given meta (settings) data to be updated for this gateway
+     * Validates the given meta (settings) data to be updated for this gateway.
      *
      * @param array $meta An array of meta (settings) data to be updated for this gateway
      * @return array The meta data to be updated in the database for this gateway, or reset into the form on failure
@@ -167,7 +167,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Returns an array of all fields to encrypt when storing in the database
+     * Returns an array of all fields to encrypt when storing in the database.
      *
      * @return array An array of the field names to encrypt when storing in the database
      */
@@ -177,7 +177,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Sets the meta data for this particular gateway
+     * Sets the meta data for this particular gateway.
      *
      * @param array $meta An array of meta data to set for this gateway
      */
@@ -187,7 +187,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Returns all HTML markup required to render an authorization and capture payment form
+     * Returns all HTML markup required to render an authorization and capture payment form.
      *
      * @param array $contact_info An array of contact info including:
      *  - id The contact ID
@@ -279,7 +279,7 @@ class Square extends NonmerchantGateway
 
                 return null;
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->Input->setErrors(
                 ['internal' => ['response' => $e->getMessage()]]
             );
@@ -287,7 +287,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Builds the HTML form
+     * Builds the HTML form.
      *
      * @param string $post_to The URL to post to
      * @return string The HTML form
@@ -327,7 +327,7 @@ class Square extends NonmerchantGateway
     {
         // Load library methods
         Loader::load(dirname(__FILE__) . DS . 'lib' . DS . 'square_api.php');
-        $api = new SquareApi($this->meta['application_id'], $this->meta['access_token'], $this->meta['location_id']);        
+        $api = new SquareApi($this->meta['application_id'], $this->meta['access_token'], $this->meta['location_id']);
 
         // Get client id
         $client_id = $get[0];
@@ -410,7 +410,7 @@ class Square extends NonmerchantGateway
     {
         // Load library methods
         Loader::load(dirname(__FILE__) . DS . 'lib' . DS . 'square_api.php');
-        $api = new SquareApi($this->meta['application_id'], $this->meta['access_token'], $this->meta['location_id']);        
+        $api = new SquareApi($this->meta['application_id'], $this->meta['access_token'], $this->meta['location_id']);
 
         // Get invoices
         $invoices = $this->ifSet($get['referenceId']);
@@ -490,7 +490,7 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Serializes an array of invoice info into a string
+     * Serializes an array of invoice info into a string.
      *
      * @param array A numerically indexed array invoices info including:
      *  - id The ID of the invoice
@@ -508,9 +508,10 @@ class Square extends NonmerchantGateway
     }
 
     /**
-     * Unserializes a string of invoice info into an array
+     * Unserializes a string of invoice info into an array.
      *
      * @param string A serialized string of invoice info in the format of key1=value1|key2=value2
+     * @param mixed $str
      * @return array A numerically indexed array invoices info including:
      *  - id The ID of the invoice
      *  - amount The amount relating to the invoice
