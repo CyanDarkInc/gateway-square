@@ -103,7 +103,7 @@ class SquareApi
 
     /**
      * Build the payment request.
-     * 
+     *
      * @param string $client_email The client email address
      * @param string $line_items The order line items
      * @param string $address The client shipping address
@@ -122,16 +122,15 @@ class SquareApi
             $value['quantity'] = (string) $value['quantity'];
 
             // Remove all formating from the amount
-            $value['base_price_money']['amount'] = (integer) strtr($value['base_price_money']['amount'], array('.' => '', ',' => ''));
-            
+            $value['base_price_money']['amount'] = (int) strtr($value['base_price_money']['amount'], ['.' => '', ',' => '']);
+
             // Format line discounts
             if (isset($value['discounts'])) {
                 foreach ($value['discounts'] as $discount_key => $discount_value) {
                     // Remove all formating from the amount
-                    $discount_value['amount_money']['amount'] = (integer) strtr($discount_value['amount_money']['amount'], array('.' => '', ',' => ''));
+                    $discount_value['amount_money']['amount'] = (int) strtr($discount_value['amount_money']['amount'], ['.' => '', ',' => '']);
                     $value['discounts'][$discount_key] = $discount_value;
                 }
-
             }
 
             // Replace changes to the original array
@@ -169,7 +168,7 @@ class SquareApi
 
     /**
      * Retrieves details for a single transaction.
-     * 
+     *
      * @param string $transaction_id The transaction id
      * @return stdClass An object contaning the transaction details
      */
