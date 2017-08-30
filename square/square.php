@@ -261,7 +261,7 @@ class Square extends NonmerchantGateway
         $this->log($this->ifSet($_SERVER['REQUEST_URI']), serialize($params), 'input', true);
 
         // Send the request to the api
-        $redirect_url = Configure::get('Blesta.gw_callback_url') . Configure::get('Blesta.company_id') . '/square/';
+        $redirect_url = Configure::get('Blesta.gw_callback_url') . Configure::get('Blesta.company_id') . '/square/?client_id=' . $contact_info['client_id'];
         $request = $api->buildPayment($client->email, $params, $contact_info, $invoices, $redirect_url);
 
         // Build the payment form
@@ -329,9 +329,6 @@ class Square extends NonmerchantGateway
         Loader::load(dirname(__FILE__) . DS . 'lib' . DS . 'square_api.php');
         $api = new SquareApi($this->meta['application_id'], $this->meta['access_token'], $this->meta['location_id']);
 
-        // Get client id
-        $client_id = $get[0];
-
         // Get invoices
         $invoices = $this->ifSet($get['referenceId']);
 
@@ -379,7 +376,7 @@ class Square extends NonmerchantGateway
         $currency = $response->transaction->order->total_money->currency;
 
         return [
-            'client_id' => $client_id,
+            'client_id' => $this->ifSet($get['client_id']),
             'amount' => $amount,
             'currency' => $currency,
             'status' => $status,
@@ -423,7 +420,7 @@ class Square extends NonmerchantGateway
         $currency = $response->transaction->order->total_money->currency;
 
         return [
-            'client_id' => null,
+            'client_id' => $this->ifSet($get['client_id']),
             'amount' => $amount,
             'currency' => $currency,
             'status' => 'approved', // we wouldn't be here if it weren't, right?
