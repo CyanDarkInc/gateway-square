@@ -16,7 +16,7 @@ class Square extends NonmerchantGateway
     /**
      * @var string The version of this gateway
      */
-    private static $version = '1.0.0';
+    private static $version = '1.1.0';
 
     /**
      * @var string The authors of this gateway
@@ -77,23 +77,7 @@ class Square extends NonmerchantGateway
      */
     public function getCurrencies()
     {
-        return ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD',
-            'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND',
-            'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYR', 'BZD', 'CAD', 'CDF',
-            'CHF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF',
-            'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP',
-            'GEL', 'GGP', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL',
-            'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'IMP', 'INR', 'IQD', 'IRR', 'ISK',
-            'JEP', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW',
-            'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL',
-            'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR',
-            'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR',
-            'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR',
-            'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD',
-            'SHP', 'SLL', 'SOS', 'SPL', 'SRD', 'STD', 'SVC', 'SYP', 'SZL', 'THB',
-            'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TVD', 'TWD', 'TZS', 'UAH',
-            'UGX', 'USD', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XCD',
-            'XDR', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW'];
+        return ['CAD', 'GBP', 'USD'];
     }
 
     /**
@@ -334,6 +318,7 @@ class Square extends NonmerchantGateway
 
         // Get the transaction details
         $response = $api->getTransaction($get['transactionId']);
+        $order = $api->getOrder($response->transaction->order_id);
 
         // Capture the transaction status of all the tenders, or reject it if at least one tender is invalid
         $status = 'error';
@@ -372,8 +357,8 @@ class Square extends NonmerchantGateway
         $this->log($this->ifSet($_SERVER['REQUEST_URI']), serialize($get), 'output', $return_status);
 
         // Get payment details
-        $amount = number_format(($response->transaction->order->total_money->amount / 100), 2, '.', '');
-        $currency = $response->transaction->order->total_money->currency;
+        $amount = number_format(($order->total_money->amount / 100), 2, '.', '');
+        $currency = $order->total_money->currency;
 
         return [
             'client_id' => $this->ifSet($get['client_id']),
@@ -414,10 +399,11 @@ class Square extends NonmerchantGateway
 
         // Get the transaction details
         $response = $api->getTransaction($get['transactionId']);
+        $order = $api->getOrder($response->transaction->order_id);
 
         // Get payment details
-        $amount = number_format(($response->transaction->order->total_money->amount / 100), 2, '.', '');
-        $currency = $response->transaction->order->total_money->currency;
+        $amount = number_format(($order->total_money->amount / 100), 2, '.', '');
+        $currency = $order->total_money->currency;
 
         return [
             'client_id' => $this->ifSet($get['client_id']),

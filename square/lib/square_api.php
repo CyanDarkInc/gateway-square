@@ -176,4 +176,22 @@ class SquareApi
     {
         return $this->apiRequest('/locations/' . $this->location_id . '/transactions/' . $transaction_id);
     }
+
+    /**
+     * Retrieves details for a order.
+     *
+     * @param string $order_id The order id
+     * @return stdClass An object contaning the order details
+     */
+    public function getOrder($order_id)
+    {
+        $params = [
+            'order_ids' => [
+                $order_id
+            ]
+        ];
+        $response = $this->apiRequest('/locations/' . $this->location_id . '/orders/batch-retrieve', $params, 'POST');
+
+        return isset($response->orders[0]) ? $response->orders[0] : $response;
+    }
 }
